@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../lib/jquery.min.js"></script>
+    <script src="../lib/canvasjs.min.js"></script>
+</head>
+<body>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+</body>
+
+<script>
+    $(function () {
+        $.ajax({
+
+            url: "../data/point10K.json",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            dataType: "json",
+            success: function (data) {
+
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    zoomEnabled: true,
+                    title: {
+                        text: "Test large point set"
+                    },
+                    axisX: {
+                        title: "x"
+                    },
+                    axisY: {
+                        title: "y",
+                        valueFormatString: "$#,##0k"
+                    },
+                    data: [{
+                        type: "scatter",
+                        toolTipContent: "<b>x: </b>{x}<br/><b>y: </b>{y}",
+                        dataPoints: data
+                    }]
+                });
+                chart.render();
+
+            }
+
+        });
+    })
+</script>
+</html>
