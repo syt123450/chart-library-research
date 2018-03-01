@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/boost.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <style>
+        #container {
+            min-width: 380px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+
+    var data = [],
+        n = 1000000,
+        i;
+    for (i = 0; i < n; i += 1) {
+        data.push([
+            Math.pow(Math.random(), 2) * 100,
+            Math.pow(Math.random(), 2) * 100
+        ]);
+    }
+
+    if (!Highcharts.Series.prototype.renderCanvas) {
+        throw 'Module not loaded';
+    }
+
+    Highcharts.chart('container', {
+
+        chart: {
+            zoomType: 'xy',
+            height: '100%'
+        },
+
+        boost: {
+            useGPUTranslations: true,
+            usePreAllocated: true
+        },
+
+        xAxis: {
+            min: 0,
+            max: 100,
+            gridLineWidth: 1
+        },
+
+        yAxis: {
+
+            min: 0,
+            max: 100,
+            minPadding: 0,
+            maxPadding: 0,
+            title: {
+                text: null
+            }
+        },
+
+        title: {
+            text: 'Scatter chart with ' + Highcharts.numberFormat(data.length, 0, ' ') + ' points'
+        },
+
+        legend: {
+            enabled: false
+        },
+
+        series: [{
+            type: 'scatter',
+            color: 'rgb(152, 0, 67)',
+            fillOpacity: 0.1,
+            data: data,
+            marker: {
+                radius: 1
+            },
+            tooltip: {
+                followPointer: false,
+                pointFormat: '[{point.x:.1f}, {point.y:.1f}]'
+            }
+        }]
+
+    });
+
+</script>
+
+</body>
+</html>
